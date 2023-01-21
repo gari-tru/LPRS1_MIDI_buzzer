@@ -1,0 +1,29 @@
+.data
+1000		;; f1
+80		;; v1
+1		;; dozvola
+0		;; d1
+
+.text
+
+/*
+R0 - temp register
+R1 - 
+R2 - 
+R3 - 
+R4 - duration_reg ;; duration
+R5 - en_reg       ;; dozvola
+R6 - volume_reg   ;; volume
+R7 - freq_reg     ;; freq
+*/
+
+begin:
+	ld R7, R0	;; R7 <- f1
+	inc R0, R0	;; adrr = 1
+	ld R6, R0	;; R6 <- v1
+	inc R0, R0	;; adrr = 2
+	ld R5, R0	;; R5 <- dozvola
+	inc R0, R0	;; adrr = 3
+	ld R4, R0	;; R4 <- d1
+
+	jmp begin

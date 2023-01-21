@@ -1,0 +1,236 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2018  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 18.0.0 Build 614 04/24/2018 SJ Lite Edition
+# Date created = 10:46:34  February 07, 2019
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		LPRS1_CPU_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M16SAU169C8G
+set_global_assignment -name TOP_LEVEL_ENTITY top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.0.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "10:46:34  FEBRUARY 07, 2019"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.0.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (VHDL)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulation
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name FLOW_ENABLE_POWER_ANALYZER ON
+set_global_assignment -name POWER_DEFAULT_INPUT_IO_TOGGLE_RATE "12.5 %"
+set_global_assignment -name VCCA_USER_VOLTAGE 3.3V
+set_global_assignment -name PROJECT_IP_REGENERATION_POLICY ALWAYS_REGENERATE_IP
+set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
+set_global_assignment -name NUM_PARALLEL_PROCESSORS 4
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH baljezgarija_tb -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME top_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME top_tb -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1 us" -section_id top_tb
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_SETUP_SCRIPT src/hdl/baljezgarija_tb_run.do -section_id eda_simulation
+
+
+
+set_location_assignment PIN_H6 -to iCLK -comment CLK12M
+set_location_assignment PIN_E6 -to inRST -comment USER_BTN
+
+
+
+
+set_location_assignment PIN_A8 -to oLED[0] -comment LED1
+set_location_assignment PIN_A9 -to oLED[1] -comment LED2
+set_location_assignment PIN_A11 -to oLED[2] -comment LED3
+set_location_assignment PIN_A10 -to oLED[3] -comment LED4
+set_location_assignment PIN_B10 -to oLED[4] -comment LED5
+set_location_assignment PIN_C9 -to oLED[5] -comment LED6
+set_location_assignment PIN_C10 -to oLED[6] -comment LED7
+set_location_assignment PIN_D8 -to oLED[7] -comment LED8
+
+
+set_location_assignment PIN_H8 -to onCOL[0] -comment D0
+set_location_assignment PIN_K10 -to onCOL[1] -comment D1
+set_location_assignment PIN_H5 -to onCOL[2] -comment D2
+set_location_assignment PIN_H4 -to onCOL[3] -comment D3
+set_location_assignment PIN_J1 -to onCOL[4] -comment D4
+set_location_assignment PIN_J2 -to onCOL[5] -comment D5
+set_location_assignment PIN_L12 -to onCOL[6] -comment D6
+set_location_assignment PIN_J12 -to onCOL[7] -comment D7
+
+set_location_assignment PIN_J13 -to oMUX_ROW[0] -comment D8
+set_location_assignment PIN_K11 -to oMUX_ROW[1] -comment D9
+set_location_assignment PIN_K12 -to oMUX_ROW[2] -comment D10
+
+set_location_assignment PIN_J10 -to oMUX_COLOR[0] -comment D11
+set_location_assignment PIN_H10 -to oMUX_COLOR[1] -comment D12
+
+
+set_location_assignment PIN_M3 -to iSW[0] -comment PIO_01
+set_location_assignment PIN_L3 -to iSW[1] -comment PIO_02
+set_location_assignment PIN_M2 -to iSW[2] -comment PIO_03
+set_location_assignment PIN_M1 -to iSW[3] -comment PIO_04
+set_location_assignment PIN_N3 -to iSW[4] -comment PIO_05
+set_location_assignment PIN_N2 -to iSW[5] -comment PIO_06
+set_location_assignment PIN_K2 -to iSW[6] -comment PIO_07
+set_location_assignment PIN_K1 -to iSW[7] -comment PIO_08
+
+set_location_assignment PIN_E1 -to iPB_UP -comment AIN0
+set_location_assignment PIN_C2 -to iPB_CENTAR -comment AIN1
+set_location_assignment PIN_C1 -to iPB_DOWN -comment AIN2
+set_location_assignment PIN_D1 -to iPB_LEFT -comment AIN3
+set_location_assignment PIN_E3 -to iPB_RIGHT -comment AIN4
+set_location_assignment PIN_F1 -to iPB_RST -comment AIN5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name EXTERNAL_FLASH_FALLBACK_ADDRESS 00000000
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name FORCE_CONFIGURATION_VCCIO ON
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+
+
+
+set_global_assignment -name DEVICE_FILTER_PACKAGE UFBGA
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 169
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 8
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVCMOS"
+set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 3.3V
+
+
+
+
+
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to iCLK
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to inRST
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oSEM_R
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oSEM_Y
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oSEM_G
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oLED[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to onCOL[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oMUX_ROW[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oMUX_ROW[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oMUX_ROW[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oMUX_COLOR[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to oMUX_COLOR[1]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[0]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[1]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[2]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[3]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[4]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[5]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[6]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iSW[7]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iPB_CENTAR
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iPB_DOWN
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iPB_LEFT
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iPB_RIGHT
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iPB_RST
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to iPB_UP
+set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "100 Hz" -to inRST
+
+
+
+set_global_assignment -name VHDL_FILE src/hdl/baljezgarija.vhd
+set_global_assignment -name VHDL_FILE src/hdl/baljezgarija_tb.vhd
+set_global_assignment -name VHDL_FILE src/hdl/top_tb.vhd
+set_global_assignment -name VHDL_FILE src/hdl/top.vhd
+set_global_assignment -name VHDL_FILE src/hdl/rgb_matrix_io_ctrl.vhd
+set_global_assignment -name VHDL_FILE src/hdl/push_buttons_dec_io_ctrl.vhd
+set_global_assignment -name VHDL_FILE src/hdl/counter.vhd
+set_global_assignment -name VHDL_FILE src/hdl/register.vhd
+set_global_assignment -name VHDL_FILE src/hdl/mux.vhd
+set_global_assignment -name VHDL_FILE src/hdl/instr_rom.vhd
+set_global_assignment -name VHDL_FILE src/hdl/data_ram.vhd
+set_global_assignment -name VHDL_FILE src/hdl/cpu_top.vhd
+set_global_assignment -name VHDL_FILE src/hdl/control_unit.vhd
+set_global_assignment -name VHDL_FILE src/hdl/cnt.vhd
+set_global_assignment -name VHDL_FILE src/hdl/alu.vhd
+set_global_assignment -name SDC_FILE src/hdl/max1000_timing.sdc
+set_instance_assignment -name GLOBAL_SIGNAL OFF -from o_pwm -to PIN_H13 -disable
+set_location_assignment PIN_H13 -to o_pwm
+
+set_global_assignment -name EDA_TEST_BENCH_FILE src/hdl/top_tb.vhd -section_id top_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME baljezgarija_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id baljezgarija_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1 us" -section_id baljezgarija_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME baljezgarija_tb -section_id baljezgarija_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/hdl/baljezgarija_tb.vhd -section_id baljezgarija_tb
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -1,0 +1,219 @@
+
+/*
+	// Ekvivalentan C kod:
+	short* p_food_and_snake = &a_food_and_snake;
+	short frames_cnt = 0;
+	short frames_per_heartbeat = 75; // 75 for synth, 1 for sim.
+	short* p_rgb_matrix = 0x100;
+	short* p_frame_sync = 0x140;
+	short* p_pb_dec = 0x200;
+	typedef struct {
+		short x;
+		short y
+	} chunk_t;
+	chunk_t a_food_and_snake[67] = {
+		{6, 2}, // Food.
+		{2, 4}, // Head.
+		{2, 3},
+		{2, 2},
+		{2, 1},
+		{1, 1}, // Tail.
+		{-1, -1},
+	};
+
+*/
+.data
+6
+0
+75
+0x100
+0x140
+0x200
+6, 2
+2, 4
+2, 3
+2, 2
+2, 1
+1, 1
+-1, -1
+
+/*
+	Ekvivalentan C kod (viši nivo):
+*/
+.text
+/*
+	Spisak registara:
+	R0 - tmp register
+	R1 - tmp chunk x
+	R2 - tmp chunk y
+	R3 - color
+	R4 - p_food_and_snake
+	R5 - p_pb_dec
+	R6 - p_frame_sync
+	R7 - p_rgb_matrix
+*/
+
+begin:
+	;; Setup pointers and color.
+	inc R0, R0                  ;; addr = 1
+	inc R0, R0                  ;; addr = 2
+	inc R0, R0                  ;; addr = 3
+	ld R7, R0                   ;; R7 <- p_rgb_matrix
+	inc R0, R0                  ;; addr = 4
+	ld R6, R0                   ;; R6 <- p_frame_sync
+	inc R0, R0                  ;; addr = 5
+	ld R5, R0                   ;; R5 <- p_pb_dec
+	inc R3, R3                  ;; color = RED
+
+frame_sync_rising_edge:
+frame_sync_wait_0:
+	ld R0, R6                   ;; R0 <- p_frame_sync
+	jmpnz frame_sync_wait_0
+frame_sync_wait_1:
+	ld R0, R6                   ;; R0 <- p_frame_sync
+	jmpz frame_sync_wait_1
+
+draw_snake_begin:
+	;; color is RED at this point.
+	sub R0, R0, R0              ;; addr = 0
+	ld R4, R0                   ;; R4 <- p_food_and_snake
+	shl R3, R3                  ;; color = GREEN;
+	shl R3, R3                  ;; color = BLUE;
+draw_snake_loop:
+	ld R1, R4                   ;; R1 <- p_food_and_snake->x
+	jmps draw_snake_end ;; Jump to end if passed tail of snake.
+	inc R4, R4
+	ld R2, R4                   ;; R2 <- p_food_and_snake->y
+	inc R4, R4                  ;; Move p_food_and_snake
+	;; p_rgb_matrix + (y << 3) + x
+	shl R2, R2
+	shl R2, R2
+	shl R2, R2
+	add R2, R1, R2              ;; (y << 3) + x
+	add R2, R7, R2              ;; p_rgb_matrix + 
+	st R3, R2                   ;; R3 -> p_rgb_matrix[y][x]
+	shr R3, R3                  ;; BLUE -> GREEN -> RED -> BLACK
+	jmpnz draw_snake_loop
+	inc R3, R3                  ;; if BLACK return to RED.
+	jmp draw_snake_loop
+draw_snake_end:
+
+count_frames_begin:
+	sub R0, R0, R0              ;; addr = 0
+	inc R0, R0
+	ld R1, R0                   ;; R1 <- frame_cnt
+	inc R0, R0
+	ld R2, R0                   ;; R2 <- frames_per_heartbeat
+	dec R0, R0
+	inc R1, R1                  ;; frame_cnt++;
+	sub R2, R2, R1              ;; frame_cnt == frames_per_heartbeat
+	jmpz count_frames_heatbeat  ;; Jump if equal.
+	st R1, R0                   ;; R1 -> frame_cnt
+	jmp frame_sync_rising_edge
+count_frames_heatbeat:
+	sub R1, R1, R1
+	st R1, R0                   ;; R1 i.e. 0 -> frame_cnt
+	;; Move snake, eat food...
+count_frames_end:
+
+move_snake_begin:
+	sub R0, R0, R0              ;; addr = 0
+	ld R4, R0                   ;; R4 <- p_food_and_snake
+	;; R4 points to food.
+	inc R4, R4
+	inc R4, R4
+	;; R4 points to head.
+	ld R1, R4                   ;; R1 <- p_food_and_snake->x
+	ld R0, R5                   ;; R0 <- p_pb_dec->x
+	inc R5, R5                  ;; Move to p_pb_dec->y
+	add R0, R0, R1              ;; Moving x by controls.
+	st R0, R4                   ;; R0 -> p_food_and_snake->x
+	inc R4, R4                  ;; Go to p_food_and_snake->y.
+	ld R2, R4                   ;; R2 <- p_food_and_snake->y
+	ld R0, R5                   ;; R0 <- p_pb_dec->y
+	dec R5, R5                  ;; Return to p_pb_dec->x
+	add R0, R0, R2              ;; Moving y by controls.
+	st R0, R4                   ;; R0 -> p_food_and_snake->y
+	inc R4, R4                  ;; p_food_and_snake++; Next chunk.
+move_snake_loop:
+	ld R0, R4                   ;; R0 <- p_food_and_snake->x
+	jmps move_snake_end         ;; Jump to end if passed tail of snake.
+	st R1, R4                   ;; prev chunk x -> p_food_and_snake->x
+	mov R1, R0                  ;; Current x is now prev x.
+	inc R4, R4                  ;; Go to p_food_and_snake->y.
+	ld R0, R4                   ;; R0 <- p_food_and_snake->y
+	st R2, R4                   ;; prev chunk y -> p_food_and_snake->y
+	mov R2, R0                  ;; Current y is now prev y.
+	inc R4, R4                  ;; p_food_and_snake++; Next chunk.
+	jmp move_snake_loop
+move_snake_end:
+
+eating_food_begin:
+	;; R4 points after tail.
+	inc R4, R4
+	inc R4, R4
+	;; R4 points to backup.
+	;; Backup tail prev pos for tail growth.
+	st R1, R4                   ;; tail prev x -> backup x
+	inc R4, R4
+	st R2, R4                   ;; tail prev y -> backup y
+	;; Check if snake ate food.
+	sub R0, R0, R0              ;; addr = 0
+	ld R4, R0                   ;; R4 <- p_food_and_snake
+	;; R4 points to food.
+	ld R1, R4                   ;; R1 <- food x
+	inc R4, R4
+	ld R2, R4                   ;; R2 <- food y
+	inc R4, R4
+	;; R4 points to head.
+	ld R0, R4                   ;; R0 <- head x
+	sub R0, R0, R1              ;; Check if head and food x match.
+	jmpnz eating_food_end       ;; Food not eaten.
+	inc R4, R4                  ;; Move to head y.
+	ld R0, R4                   ;; R0 <- head y
+	sub R0, R0, R2              ;; Check if head and food y match.
+	jmpnz eating_food_end       ;; Food not eaten.
+	;; New food.
+	dec R4, R4
+	;; R4 points to head.
+	ld R0, R4                   ;; R0 <- head x
+	dec R4, R4
+	;; R4 points to food y.
+	sub R2, R2, R0              ;; Moving food y.
+	;; Making mask.
+	sub R0, R0, R0
+	inc R0, R0
+	shl R0, R0
+	inc R0, R0
+	shl R0, R0
+	inc R0, R0
+	and R2, R2, R0              ;; Masking food y to be [0,8)
+	st R2, R4                   ;; R2 -> food y
+	dec R4, R4
+	;; R4 points to food x.
+	sub R1, R1, R2              ;; Moving food x.
+	and R1, R1, R0              ;; Masking food x to be [0,8)
+	st R1, R4                   ;; R1 -> food x
+eating_food_tail_loop:
+	inc R4, R4
+	ld R0, R4                   ;; R0 <- p_food_and_snake->x
+	jmpns eating_food_tail_loop ;; Jump until find after tail -1.
+	;; R0 has -1.
+	inc R4, R4
+	inc R4, R4
+	;; R4 points to backup.
+	ld R1, R4                   ;; R1 <- backup x
+	st R0, R4                   ;; -1 -> backup x i.e. new after tail.
+	inc R4, R4
+	ld R2, R4                   ;; R2 <- backup y
+	st R0, R4                   ;; -1 -> backup y i.e. new after tail.
+	dec R4, R4
+	;; R4 points to backup.
+	dec R4, R4
+	st R2, R4                   ;; backup y -> after tail i.e. new tail.
+	dec R4, R4
+	;; R4 points to after tail e.i. new tail.
+	st R1, R4                   ;; backup x -> after tail i.e. new tail.
+eating_food_end:
+
+	jmp frame_sync_rising_edge
